@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.deimos.projects.bloggingplatformapi.utils.Constants.BLOGS_PATH;
+import static org.deimos.projects.bloggingplatformapi.utils.Constants.BLOG_BY_ID_PATH;
+
 /**
- * Controller class to handle blog-related operations in the blogging platform API.
- * Acts as the entry point for HTTP requests related to blogs.
- * This class is annotated with @RestController, indicating that it is a Spring MVC controller.
+ * Handles blog-related operations in the blogging platform API.
+ * Provides endpoints for creating, retrieving, updating, and deleting blogs.
  */
 @RestController
 @RequiredArgsConstructor
@@ -21,39 +23,64 @@ public class BlogController {
 
     private final BlogService blogService;
 
-    @PostMapping("/blogs")
+    /**
+     * Creates a new blog entry.
+     *
+     * @param blogPostRequest The request containing the blog data.
+     * @return BlogPostResponse containing the created blog entry details.
+     */
+    @PostMapping(BLOGS_PATH)
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogPostResponse createBlogEntry(@Validated @RequestBody final BlogPostRequest request) {
-
-        return blogService.createBlogEntry(request);
+    public BlogPostResponse createBlogEntry(@Validated @RequestBody final BlogPostRequest blogPostRequest) {
+        return blogService.createBlogEntry(blogPostRequest);
     }
 
-    @GetMapping("/blogs")
+    /**
+     * Retrieves all blog entries.
+     *
+     * @return List of BlogPostResponse containing all blog entries.
+     */
+    @GetMapping(BLOGS_PATH)
     @ResponseStatus(HttpStatus.OK)
     public List<BlogPostResponse> getAllBlogEntries() {
-
         return blogService.getAllBlogEntries();
     }
 
-    @GetMapping("/blogs/{id}")
+    /**
+     * Retrieves a blog entry by its ID.
+     *
+     * @param blogId The unique identifier of the blog entry.
+     * @return BlogPostResponse containing the blog entry details.
+     */
+    @GetMapping(BLOG_BY_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public BlogPostResponse getBlogEntryById(@PathVariable final Long id) {
-
-        return blogService.getBlogEntryById(id);
+    public BlogPostResponse getBlogEntryById(@PathVariable final Long blogId) {
+        return blogService.getBlogEntryById(blogId);
     }
 
-    @PutMapping("/blogs/{id}")
+    /**
+     * Updates an existing blog entry.
+     *
+     * @param blogId           The unique identifier of the blog entry to update.
+     * @param blogPostRequest  The request containing the updated blog data.
+     * @return BlogPostResponse containing the updated blog entry details.
+     */
+    @PutMapping(BLOG_BY_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public BlogPostResponse updateBlogEntry(
-            @Validated @RequestBody final BlogPostRequest request, @PathVariable final Long id) {
-
-        return blogService.updateBlogEntry(request, id);
+            @PathVariable final Long blogId,
+            @Validated @RequestBody final BlogPostRequest blogPostRequest) {
+        return blogService.updateBlogEntry(blogPostRequest, blogId);
     }
 
-    @DeleteMapping("/blogs/{id}")
+    /**
+     * Deletes a blog entry by its ID.
+     *
+     * @param blogId The unique identifier of the blog entry to delete.
+     */
+    @DeleteMapping(BLOG_BY_ID_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBlogEntry(@PathVariable final Long id) {
-
-        blogService.deleteBlogEntry(id);
+    public void deleteBlogEntry(@PathVariable final Long blogId) {
+        blogService.deleteBlogEntry(blogId);
     }
 }

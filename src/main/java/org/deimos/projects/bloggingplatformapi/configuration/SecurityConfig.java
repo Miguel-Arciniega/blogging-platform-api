@@ -8,6 +8,21 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
+/**
+ * Configuration class for setting up the security configuration of the application.
+ * <p>
+ * This class configures security settings using Spring Security's fluent API.
+ * The primary focus is to define the behavior of HTTP security interactions, including
+ * cross-site request forgery (CSRF) handling, request authorization, and basic authentication.
+ * <p>
+ * Features configured:
+ * <ol>
+ * <li>CSRF protection is disabled to allow non-browser clients (e.g., Postman) to interact with the application.
+ * <li> All HTTP requests are permitted without authentication, allowing unrestricted access.
+ * <li> HTTP Basic Authentication is enabled as a default mechanism.
+ * <p>
+ * By using the defined bean, the application utilizes the SecurityFilterChain to enforce these security policies.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

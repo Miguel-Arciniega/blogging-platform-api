@@ -2,17 +2,46 @@ package org.deimos.projects.bloggingplatformapi.model.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostData;
-import org.deimos.projects.bloggingplatformapi.model.BlogPostResponse;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostRequest;
+import org.deimos.projects.bloggingplatformapi.model.BlogPostResponse;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * BlogPostMapper is an abstract class responsible for mapping between different layers of the
+ * application related to the BlogPost entity. It extends the capabilities of the MapStruct library
+ * to perform object mapping while integrating custom logic for specific fields.
+ * <p>
+ * The mapper handles conversion between the following representations:
+ * <ul>
+ * <li> BlogPostRequest: Input DTO used by client-side requests.
+ * <li> BlogPostData: Internal data model for storing blog-related information.
+ * <li> BlogPostResponse: Output DTO used to return data back to the client.
+ * </ul>
+ * <p>
+ * Key Responsibilities:
+ * <ul>
+ * <li> Convert BlogPostRequest to BlogPostData while excluding certain fields (e.g., id, createdAt, updatedAt)
+ *   and transforming tags into a JSON string using a qualified method.
+ * <li> Convert BlogPostData to BlogPostResponse, transforming JSON-encoded tags back into a Set<String>
+ *   using a qualified method.
+ * <li> Merge updates from a new BlogPostData into an existing BlogPostData instance during updates, ensuring
+ *   immutability for specific fields such as createdAt and updatedAt.
+ * <li> Map collections of BlogPostData to a list of BlogPostResponse using stream processing.
+ * </ul>
+ * <p>
+ * Custom Logic:
+ * <ul>
+ * <li> The mapStringSetToJSON method serializes a Set<String> into a JSON string format.
+ * <li> The mapJSONStringToSet method deserializes a JSON string into a Set<String>.
+ * <li> These custom methods use an ObjectMapper for JSON handling, they are used by mapstruct
+ * </ul>
+ */
 @Mapper(componentModel = "spring")
 public abstract class BlogPostMapper {
 
@@ -22,10 +51,8 @@ public abstract class BlogPostMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(source = "tags", target = "tags", qualifiedByName = "mapStringSetToJSON")
     public abstract BlogPostData mapRequestToBlogEntryData(final BlogPostRequest blogPostRequest);
 
-    @Mapping(source = "tags", target = "tags", qualifiedByName = "mapJSONStringToSet")
     public abstract BlogPostResponse mapBlogEntryDataToResponse(final BlogPostData blogPostData);
 
     @Mapping(source = "oldPost.id", target = "id")
@@ -37,13 +64,6 @@ public abstract class BlogPostMapper {
     @Mapping(source = "oldPost.updatedAt", target = "updatedAt")
     public abstract BlogPostData mapUpdatedBlogData(final BlogPostData newPost, final BlogPostData oldPost);
 
-    public List<BlogPostResponse> mapToBlogEntryResponses(final Iterable<BlogPostData> blogEntries) {
-        return StreamSupport.stream(blogEntries.spliterator(), false)
-                .map(this::mapBlogEntryDataToResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Named("mapStringSetToJSON")
     protected String mapStringSetToJSON(final Set<String> stringSet) {
         if (stringSet == null || stringSet.isEmpty()) {
             return "[]";
@@ -55,7 +75,6 @@ public abstract class BlogPostMapper {
         }
     }
 
-    @Named("mapJSONStringToSet")
     protected Set<String> mapJSONStringToSet(final String jsonString) {
         if(jsonString ==null||jsonString.isEmpty()) {
             return new HashSet<>();
@@ -66,5 +85,11 @@ public abstract class BlogPostMapper {
         } catch(Exception e) {
             throw new RuntimeException("Error while converting JSON String to Set", e);
         }
+    }
+
+    public List<BlogPostResponse> mapToBlogEntryResponses(final Iterable<BlogPostData> blogEntries) {
+        return StreamSupport.stream(blogEntries.spliterator(), false)
+                .map(this::mapBlogEntryDataToResponse)
+                .toList();
     }
 }
