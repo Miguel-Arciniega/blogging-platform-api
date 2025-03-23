@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: ${ENVIRONMENT:dev}
+    active: ${ENVIRONMENT:}
 
 server:
   servlet:

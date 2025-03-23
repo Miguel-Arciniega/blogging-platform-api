@@ -1,5 +1,6 @@
 package org.deimos.projects.bloggingplatformapi.configuration;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -18,7 +19,8 @@ import org.springframework.context.annotation.Configuration;
  *    are serialized in an ISO-8601 string format instead of timestamps.
  * <li>{@link SerializationFeature#WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS} - Avoids using nanoseconds
  *    for date and time serialization, ensuring compatibility.
- * <p>
+ * <li>{@link DeserializationFeature#FAIL_ON_UNKNOWN_PROPERTIES} - Ignore unknown fields
+ * </ol>
  * The customized {@link ObjectMapper} can be used as a Bean in other parts of the application where
  * JSON processing is needed.
  */
@@ -32,6 +34,7 @@ public class JacksonConfig {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // Use ISO-8601
         mapper.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS); // Avoid nanoseconds
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         return mapper;
     }

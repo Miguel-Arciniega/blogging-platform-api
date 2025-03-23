@@ -1,11 +1,11 @@
 package org.deimos.projects.bloggingplatformapi.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostRequest;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostResponse;
 import org.deimos.projects.bloggingplatformapi.service.BlogService;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class BlogController {
      */
     @PostMapping(BLOGS_PATH)
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogPostResponse createBlogEntry(@Validated @RequestBody final BlogPostRequest blogPostRequest) {
+    public BlogPostResponse createBlogEntry(@Valid @RequestBody final BlogPostRequest blogPostRequest) {
         return blogService.createBlogEntry(blogPostRequest);
     }
 
@@ -69,7 +69,7 @@ public class BlogController {
     @ResponseStatus(HttpStatus.OK)
     public BlogPostResponse updateBlogEntry(
             @PathVariable final Long blogId,
-            @Validated @RequestBody final BlogPostRequest blogPostRequest) {
+            @Valid @RequestBody final BlogPostRequest blogPostRequest) {
         return blogService.updateBlogEntry(blogPostRequest, blogId);
     }
 
