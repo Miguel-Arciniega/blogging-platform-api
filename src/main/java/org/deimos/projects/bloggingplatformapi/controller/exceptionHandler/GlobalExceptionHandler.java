@@ -4,7 +4,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.deimos.projects.bloggingplatformapi.exceptions.BlogPostNotFoundException;
-import org.deimos.projects.bloggingplatformapi.model.Response;
+import org.deimos.projects.bloggingplatformapi.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -31,12 +31,12 @@ class GlobalExceptionHandler {
      * and a descriptive error message.
      *
      * @param ex the exception that was thrown and needs to be handled
-     * @return a Response object containing the HTTP 500 status code and the exception message
+     * @return a ErrorResponse object containing the HTTP 500 status code and the exception message
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Response handleUnknownException(final Exception ex) {
-        return new Response(HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), ex.getMessage());
+    public ErrorResponse handleUnknownException(final Exception ex) {
+        return new ErrorResponse(HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), ex.getMessage());
     }
 
     /**
@@ -44,12 +44,12 @@ class GlobalExceptionHandler {
      * with an HTTP 404 Not Found status code and a descriptive error message.
      *
      * @param ex the exception that was thrown and needs to be handled
-     * @return a {@code Response} object containing the HTTP 404 status code and the exception message
+     * @return a {@code ErrorResponse} object containing the HTTP 404 status code and the exception message
      */
     @ExceptionHandler(BlogPostNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Response handlePostNotFound(final Exception ex) {
-        return new Response(HttpResponseStatus.NOT_FOUND.code(), ex.getMessage());
+    public ErrorResponse handlePostNotFound(final Exception ex) {
+        return new ErrorResponse(HttpResponseStatus.NOT_FOUND.code(), ex.getMessage());
     }
 
     /**

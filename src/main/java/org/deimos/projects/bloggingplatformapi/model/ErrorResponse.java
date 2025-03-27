@@ -17,7 +17,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class Response {
+public class ErrorResponse {
 
     private Integer code;
     private String message;

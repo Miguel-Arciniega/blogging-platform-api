@@ -5,3 +5,26 @@ spring:
 server:
   servlet:
     context-path: /blogging-platform
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match: /**
+  use-management-port: false
+  disable-swagger-default-url: true
+  info:
+    title: Blogging Platform API
+    version: 1.0
+    description: API documentation for the Blogging Platform
+    contact:
+      name: Your Name
+      email: your.email@example.com
+    license:
+      name: Apache 2.0
+      url: http://www.apache.org/licenses/LICENSE-2.0.html
+  show-actuator: true
+  packages-to-scan: org.deimos.projects.bloggingplatformapi.controller

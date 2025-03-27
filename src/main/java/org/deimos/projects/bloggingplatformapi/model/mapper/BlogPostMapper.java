@@ -1,5 +1,7 @@
 package org.deimos.projects.bloggingplatformapi.model.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostData;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostRequest;
@@ -7,7 +9,7 @@ import org.deimos.projects.bloggingplatformapi.model.BlogPostResponse;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -65,25 +67,29 @@ public abstract class BlogPostMapper {
     public abstract BlogPostData mapUpdatedBlogData(final BlogPostData newPost, final BlogPostData oldPost);
 
     protected String mapStringSetToJSON(final Set<String> stringSet) {
-        if (stringSet == null || stringSet.isEmpty()) {
+        if (stringSet == null) {
             return "[]";
         }
+        
         try {
             return objectMapper.writeValueAsString(stringSet);
-        } catch (Exception e) {
-            throw new RuntimeException("Error while converting String Set to JSON", e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize tags to JSON", e);
         }
     }
 
     protected Set<String> mapJSONStringToSet(final String jsonString) {
-        if(jsonString ==null||jsonString.isEmpty()) {
-            return new HashSet<>();
+        if (jsonString == null || jsonString.isBlank()) {
+            return Collections.emptySet();
         }
+
         try {
-            return objectMapper.readValue(
-                    jsonString, objectMapper.getTypeFactory().constructCollectionType(Set.class, String.class));
-        } catch(Exception e) {
-            throw new RuntimeException("Error while converting JSON String to Set", e);
+            TypeReference<Set<String>> typeRef = new TypeReference<>() {};
+            return objectMapper.readValue(jsonString, typeRef);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to parse JSON string to Set<String>: " + jsonString, e);
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected error while converting JSON string to Set<String>", e);
         }
     }
 
