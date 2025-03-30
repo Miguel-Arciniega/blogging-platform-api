@@ -3,8 +3,10 @@ spring:
     url: ${DB_URL:}
     username: ${DB_USER:}
     password: ${DB_PASSWORD:}
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jpa:
-    hibernate:
-      ddl-auto: none
+  docker:
+    compose:
+      enabled: false
+
+server:
+  port: 9090

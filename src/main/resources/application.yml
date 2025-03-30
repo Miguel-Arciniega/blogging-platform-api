@@ -4,7 +4,7 @@ spring:
 
 server:
   servlet:
-    context-path: /blogging-platform
+    context-path: /v1/blogging-platform
 
 springdoc:
   swagger-ui:

@@ -1,4 +1,5 @@
 services:
+
   mysql:
     image: mysql:latest
     container_name: mysql-db
@@ -10,5 +11,6 @@ services:
     volumes:
       - my-db-data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
+
 volumes:
   my-db-data:

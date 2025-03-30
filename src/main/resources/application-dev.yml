@@ -12,6 +12,7 @@ spring:
       stop:
         command: down
         timeout: 1m
+      file: db-compose.yml
 
 server:
   port: 8080

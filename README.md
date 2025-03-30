@@ -45,7 +45,7 @@ Execute the following command to clean and run the application:
 #### API Endpoints
 The application will be available at:
 ```
-http://localhost:8080/blogging-platform
+http://localhost:8080/v1/blogging-platform
 ```
 
 #### API Documentation
@@ -53,7 +53,7 @@ The API documentation is available in two formats:
 
 1. **Swagger UI** (Interactive Documentation)
    ```
-   http://localhost:8080/blogging-platform/swagger-ui.html
+   http://localhost:8080/v1/blogging-platform/swagger-ui.html
    ```
    - Provides an interactive interface to explore and test the API
    - Includes detailed request/response schemas
@@ -61,7 +61,7 @@ The API documentation is available in two formats:
 
 2. **OpenAPI JSON** (Raw Specification)
    ```
-   http://localhost:8080/blogging-platform/v3/api-docs
+   http://localhost:8080/v1/blogging-platform/v3/api-docs
    ```
    - Provides the raw OpenAPI specification in JSON format
    - Useful for generating client code or importing into API tools
