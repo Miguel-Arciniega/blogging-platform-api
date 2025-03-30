@@ -74,6 +74,7 @@ dependencies {
 }
 
 tasks.named('test') {
+    environment 'ENVIRONMENT', 'default'
     useJUnitPlatform()
 }
 

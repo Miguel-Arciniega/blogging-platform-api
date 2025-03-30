@@ -6,7 +6,6 @@ import jakarta.validation.ConstraintViolationException;
 import org.deimos.projects.bloggingplatformapi.exceptions.BlogPostNotFoundException;
 import org.deimos.projects.bloggingplatformapi.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,12 +59,12 @@ class GlobalExceptionHandler {
      *
      * @param ex the exception thrown when method argument validation fails,
      *           containing details about the validation errors
-     * @return a {@code ResponseEntity} containing an HTTP 400 status code
-     *         and a map of field-specific error messages, where the key is
-     *         the field name and the value is the corresponding error message
+     * @return a {@code Map<String, String>} containing field-specific error messages,
+     *         where the key is the field name and the value is the corresponding error message
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException ex) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidationErrors(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
 
         // Extract field-specific validation messages
@@ -74,7 +73,7 @@ class GlobalExceptionHandler {
         }
 
         // Return formatted error response
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return errors;
     }
 
     /**
@@ -83,11 +82,12 @@ class GlobalExceptionHandler {
      * to extract relevant details and formats them into a structured error response.
      *
      * @param ex the {@code ConstraintViolationException} containing the details of the constraint violations
-     * @return a {@code ResponseEntity} containing an HTTP 400 Bad Request status code
-     *         and a map of errors where the key is the field name and the value is the corresponding error message
+     * @return a {@code Map<String, String>} containing field-specific error messages,
+     *         where the key is the field name and the value is the corresponding error message
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, String>> handleConstraintViolation(ConstraintViolationException ex) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleConstraintViolation(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();
 
         // Extract and format constraint violations
@@ -99,6 +99,6 @@ class GlobalExceptionHandler {
         }
 
         // Return formatted error response
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return errors;
     }
 }

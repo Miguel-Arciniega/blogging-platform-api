@@ -6,8 +6,8 @@ A robust REST API for a blogging platform built with Spring Boot 3.x.
 
 Ensure the following tools/software are installed and configured:
 
-1. **JDK 17+**
-   - Install JDK version 17 or later
+1. **JDK 21+**
+   - Install JDK version 21 or later
    - Set the `JAVA_HOME` environment variable to the JDK installation directory
 
 2. **Gradle 7+**

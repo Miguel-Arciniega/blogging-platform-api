@@ -16,8 +16,7 @@ class BlogPostDataMapperTest {
     @BeforeEach
     void setUp() {
         blogPostMapper = new BlogPostMapperImpl();
-        ObjectMapper objectMapper = new ObjectMapper();
-        blogPostMapper.objectMapper = objectMapper; // Inject ObjectMapper dependency
+        blogPostMapper.objectMapper = new ObjectMapper(); // Inject ObjectMapper dependency
     }
 
     @Test
