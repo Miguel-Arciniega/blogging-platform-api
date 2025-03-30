@@ -53,9 +53,9 @@ public abstract class BlogPostMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    public abstract BlogPostData mapRequestToBlogEntryData(final BlogPostRequest blogPostRequest);
+    public abstract BlogPostData mapRequestToBlogPostData(final BlogPostRequest blogPostRequest);
 
-    public abstract BlogPostResponse mapBlogEntryDataToResponse(final BlogPostData blogPostData);
+    public abstract BlogPostResponse mapBlogPostDataToResponse(final BlogPostData blogPostData);
 
     @Mapping(source = "oldPost.id", target = "id")
     @Mapping(source = "newPost.title", target = "title")
@@ -64,7 +64,7 @@ public abstract class BlogPostMapper {
     @Mapping(source = "newPost.tags", target = "tags")
     @Mapping(source = "oldPost.createdAt", target = "createdAt")
     @Mapping(source = "oldPost.updatedAt", target = "updatedAt")
-    public abstract BlogPostData mapUpdatedBlogData(final BlogPostData newPost, final BlogPostData oldPost);
+    public abstract BlogPostData mapUpdatedBlogPostData(final BlogPostData newPost, final BlogPostData oldPost);
 
     protected String mapStringSetToJSON(final Set<String> stringSet) {
         if (stringSet == null) {
@@ -93,9 +93,9 @@ public abstract class BlogPostMapper {
         }
     }
 
-    public List<BlogPostResponse> mapToBlogEntryResponses(final Iterable<BlogPostData> blogEntries) {
+    public List<BlogPostResponse> mapToBlogPostList(final Iterable<BlogPostData> blogEntries) {
         return StreamSupport.stream(blogEntries.spliterator(), false)
-                .map(this::mapBlogEntryDataToResponse)
+                .map(this::mapBlogPostDataToResponse)
                 .toList();
     }
 }

@@ -12,18 +12,18 @@ import java.time.Instant;
  * Represents an entry in a blogging platform.
  * This entity includes metadata about the blog post, such as the title, content, category, tags,
  * and audit information regarding its creation and modification.
- * It is intended to serve as a data model for storing and retrieving blog entries.
+ * It is intended to serve as a data model for storing and retrieving blog posts.
  * <p>
  * Fields:
- * <li> id: Unique identifier for the blog entry.
+ * <li> id: Unique identifier for the blog post.
  * <li> title: Title of the blog post.
  * <li> content: Main content or body of the blog post.
  * <li> category: Category under which the blog post is filed.
- * <li> tags: List of tags or keywords associated with the blog entry.
- * <li> createdAt: Timestamp when the blog entry was created.
- * <li> createdBy: Identifier of the user who initially created the blog entry.
- * <li> updatedAt: Timestamp of the last modification performed on the blog entry.
- * <li> updatedBy: Identifier of the user who last modified the blog entry.
+ * <li> tags: List of tags or keywords associated with the blog post.
+ * <li> createdAt: Timestamp when the blog post was created.
+ * <li> createdBy: Identifier of the user who initially created the blog post.
+ * <li> updatedAt: Timestamp of the last modification performed on the blog post.
+ * <li> updatedBy: Identifier of the user who last modified the blog post.
  */
 @Data
 @NoArgsConstructor

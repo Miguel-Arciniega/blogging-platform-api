@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 /**
- * Represents a request to create or update a blog entry in the blogging platform.
+ * Represents a request to create or update a blog post in the blogging platform.
  * This class is used as a data transfer object (DTO) for accepting input related to
- * a blog entry from the client side.
+ * a blog post from the client side.
  * <p>
- * The class contains the details of the blog entry, including its title,
+ * The class contains the details of the blog post, including its title,
  * content, category, and associated tags. It is utilized in APIs for creating and
- * updating blog entries.
+ * updating blog posts.
  */
 @Data
 @NoArgsConstructor

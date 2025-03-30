@@ -47,103 +47,103 @@ class BlogServiceTest {
     }
 
     @Test
-    void createBlogEntry_Success() {
+    void createBlogPost_Success() {
         // Given
-        when(blogPostMapper.mapRequestToBlogEntryData(blogPostRequest)).thenReturn(blogPostData);
+        when(blogPostMapper.mapRequestToBlogPostData(blogPostRequest)).thenReturn(blogPostData);
         when(blogRepository.save(blogPostData)).thenReturn(blogPostData);
-        when(blogPostMapper.mapBlogEntryDataToResponse(blogPostData)).thenReturn(blogPostResponse);
+        when(blogPostMapper.mapBlogPostDataToResponse(blogPostData)).thenReturn(blogPostResponse);
 
         // When
-        BlogPostResponse result = blogService.createBlogEntry(blogPostRequest);
+        BlogPostResponse result = blogService.createBlogPost(blogPostRequest);
 
         // Then
         assertNotNull(result);
-        verify(blogPostMapper).mapRequestToBlogEntryData(blogPostRequest);
+        verify(blogPostMapper).mapRequestToBlogPostData(blogPostRequest);
         verify(blogRepository).save(blogPostData);
-        verify(blogPostMapper).mapBlogEntryDataToResponse(blogPostData);
+        verify(blogPostMapper).mapBlogPostDataToResponse(blogPostData);
     }
 
     @Test
-    void getBlogEntryById_Success() {
+    void getBlogPostById_Success() {
         // Given
         when(blogRepository.findById(blogId)).thenReturn(Optional.of(blogPostData));
-        when(blogPostMapper.mapBlogEntryDataToResponse(blogPostData)).thenReturn(blogPostResponse);
+        when(blogPostMapper.mapBlogPostDataToResponse(blogPostData)).thenReturn(blogPostResponse);
 
         // When
-        BlogPostResponse result = blogService.getBlogEntryById(blogId);
+        BlogPostResponse result = blogService.getBlogPostById(blogId);
 
         // Then
         assertNotNull(result);
         verify(blogRepository).findById(blogId);
-        verify(blogPostMapper).mapBlogEntryDataToResponse(blogPostData);
+        verify(blogPostMapper).mapBlogPostDataToResponse(blogPostData);
     }
 
     @Test
-    void getBlogEntryById_NotFound() {
+    void getBlogPostById_NotFound() {
         // Given
         when(blogRepository.findById(blogId)).thenReturn(Optional.empty());
 
         // When & Then
-        assertThrows(BlogPostNotFoundException.class, () -> blogService.getBlogEntryById(blogId));
+        assertThrows(BlogPostNotFoundException.class, () -> blogService.getBlogPostById(blogId));
         verify(blogRepository).findById(blogId);
-        verify(blogPostMapper, never()).mapBlogEntryDataToResponse(any());
+        verify(blogPostMapper, never()).mapBlogPostDataToResponse(any());
     }
 
     @Test
-    void getAllBlogEntries_Success() {
+    void getAllBlogPosts_Success() {
         // Given
         List<BlogPostData> blogPostDataList = Arrays.asList(blogPostData);
         List<BlogPostResponse> expectedResponses = Arrays.asList(blogPostResponse);
         when(blogRepository.findAll()).thenReturn(blogPostDataList);
-        when(blogPostMapper.mapToBlogEntryResponses(blogPostDataList)).thenReturn(expectedResponses);
+        when(blogPostMapper.mapToBlogPostList(blogPostDataList)).thenReturn(expectedResponses);
 
         // When
-        List<BlogPostResponse> result = blogService.getAllBlogEntries();
+        List<BlogPostResponse> result = blogService.getAllBlogPosts();
 
         // Then
         assertNotNull(result);
         assertEquals(expectedResponses, result);
         verify(blogRepository).findAll();
-        verify(blogPostMapper).mapToBlogEntryResponses(blogPostDataList);
+        verify(blogPostMapper).mapToBlogPostList(blogPostDataList);
     }
 
     @Test
-    void updateBlogEntry_Success() {
+    void updateBlogPost_Success() {
         // Given
         when(blogRepository.findById(blogId)).thenReturn(Optional.of(blogPostData));
-        when(blogPostMapper.mapRequestToBlogEntryData(blogPostRequest)).thenReturn(blogPostData);
-        when(blogPostMapper.mapUpdatedBlogData(blogPostData, blogPostData)).thenReturn(blogPostData);
+        when(blogPostMapper.mapRequestToBlogPostData(blogPostRequest)).thenReturn(blogPostData);
+        when(blogPostMapper.mapUpdatedBlogPostData(blogPostData, blogPostData)).thenReturn(blogPostData);
         when(blogRepository.save(blogPostData)).thenReturn(blogPostData);
-        when(blogPostMapper.mapBlogEntryDataToResponse(blogPostData)).thenReturn(blogPostResponse);
+        when(blogPostMapper.mapBlogPostDataToResponse(blogPostData)).thenReturn(blogPostResponse);
 
         // When
-        BlogPostResponse result = blogService.updateBlogEntry(blogPostRequest, blogId);
+        BlogPostResponse result = blogService.updateBlogPost(blogPostRequest, blogId);
 
         // Then
         assertNotNull(result);
         verify(blogRepository).findById(blogId);
-        verify(blogPostMapper).mapRequestToBlogEntryData(blogPostRequest);
-        verify(blogPostMapper).mapUpdatedBlogData(blogPostData, blogPostData);
+        verify(blogPostMapper).mapRequestToBlogPostData(blogPostRequest);
+        verify(blogPostMapper).mapUpdatedBlogPostData(blogPostData, blogPostData);
         verify(blogRepository).save(blogPostData);
-        verify(blogPostMapper).mapBlogEntryDataToResponse(blogPostData);
+        verify(blogPostMapper).mapBlogPostDataToResponse(blogPostData);
     }
 
     @Test
-    void updateBlogEntry_NotFound() {
+    void updateBlogPost_NotFound() {
         // Given
         when(blogRepository.findById(blogId)).thenReturn(Optional.empty());
 
         // When & Then
-        assertThrows(BlogPostNotFoundException.class, () -> blogService.updateBlogEntry(blogPostRequest, blogId));
+        assertThrows(BlogPostNotFoundException.class, () -> blogService.updateBlogPost(blogPostRequest, blogId));
         verify(blogRepository).findById(blogId);
-        verify(blogPostMapper, never()).mapUpdatedBlogData(any(), any());
+        verify(blogPostMapper, never()).mapUpdatedBlogPostData(any(), any());
         verify(blogRepository, never()).save(any());
     }
 
     @Test
-    void deleteBlogEntry_Success() {
+    void deleteBlogPost_Success() {
         // When
-        blogService.deleteBlogEntry(blogId);
+        blogService.deleteBlogPost(blogId);
 
         // Then
         verify(blogRepository).deleteById(blogId);

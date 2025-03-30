@@ -13,12 +13,12 @@ import java.util.List;
 
 
 /**
- * Service class responsible for handling business logic related to blog entries
+ * Service class responsible for handling business logic related to blog posts
  * in the blogging platform. This class primarily communicates with the data layer
- * and provides methods to perform various operations on blog entries.
+ * and provides methods to perform various operations on blog posts.
  * <p>
  * The methods include functionality for creating, retrieving, updating, and
- * deleting blog entries. These methods are designed to be invoked by the
+ * deleting blog posts. These methods are designed to be invoked by the
  * controller layer, serving as the intermediary between the controller and
  * the data access layer.
  * <p>
@@ -35,73 +35,73 @@ public class BlogService {
 
 
     /**
-     * Creates a new blog entry in the database.
+     * Creates a new blog post in the database.
      *
      * @param blogPostRequest The request object containing blog data to be created.
-     * @return BlogPostResponse containing the created blog entry details.
+     * @return BlogPostResponse containing the created blog post details.
      */
-    public BlogPostResponse createBlogEntry(final BlogPostRequest blogPostRequest) {
+    public BlogPostResponse createBlogPost(final BlogPostRequest blogPostRequest) {
 
         BlogPostData receivedBlogPostData =
-                blogPostMapper.mapRequestToBlogEntryData(blogPostRequest);
+                blogPostMapper.mapRequestToBlogPostData(blogPostRequest);
 
         BlogPostData createdBlogPostData =
                 blogRepository.save(receivedBlogPostData);
 
-        return blogPostMapper.mapBlogEntryDataToResponse(createdBlogPostData);
+        return blogPostMapper.mapBlogPostDataToResponse(createdBlogPostData);
     }
 
     /**
-     * Retrieves a blog entry by its ID.
+     * Retrieves a blog post by its ID.
      *
-     * @param id The unique identifier of the blog entry.
-     * @return BlogPostResponse containing the details of the blog entry.
-     * @throws BlogPostNotFoundException if the blog entry is not found.
+     * @param id The unique identifier of the blog post.
+     * @return BlogPostResponse containing the details of the blog post.
+     * @throws BlogPostNotFoundException if the blog post is not found.
      */
-    public BlogPostResponse getBlogEntryById(final Long id) {
+    public BlogPostResponse getBlogPostById(final Long id) {
 
         return blogRepository.findById(id)
-                .map(blogPostMapper::mapBlogEntryDataToResponse)
+                .map(blogPostMapper::mapBlogPostDataToResponse)
                 .orElseThrow(() -> new BlogPostNotFoundException(id));
     }
 
     /**
-     * Retrieves all blog entries stored in the database.
+     * Retrieves all blog posts stored in the database.
      *
-     * @return List of BlogPostResponse containing details of all blog entries.
+     * @return List of BlogPostResponse containing details of all blog posts.
      */
-    public List<BlogPostResponse> getAllBlogEntries() {
-        return blogPostMapper.mapToBlogEntryResponses(blogRepository.findAll());
+    public List<BlogPostResponse> getAllBlogPosts() {
+        return blogPostMapper.mapToBlogPostList(blogRepository.findAll());
     }
 
     /**
-     * Updates an existing blog entry by its ID.
+     * Updates an existing blog post by its ID.
      *
-     * @param id               The unique identifier of the blog entry to be updated.
+     * @param id               The unique identifier of the blog post to be updated.
      * @param blogPostRequest The request object containing updated blog data.
-     * @return BlogPostResponse containing the updated blog entry details.
+     * @return BlogPostResponse containing the updated blog post details.
      */
-    public BlogPostResponse updateBlogEntry(final BlogPostRequest blogPostRequest, final Long id) {
+    public BlogPostResponse updateBlogPost(final BlogPostRequest blogPostRequest, final Long id) {
 
         BlogPostData newBlogPostData =
-                blogPostMapper.mapRequestToBlogEntryData(blogPostRequest);
+                blogPostMapper.mapRequestToBlogPostData(blogPostRequest);
 
         BlogPostData updatedPostData = blogRepository.findById(id)
                 .map(existingBlogPostData ->
-                        blogPostMapper.mapUpdatedBlogData(newBlogPostData, existingBlogPostData))
+                        blogPostMapper.mapUpdatedBlogPostData(newBlogPostData, existingBlogPostData))
                 .orElseThrow(() -> new BlogPostNotFoundException(id));
 
         blogRepository.save(updatedPostData);
 
-        return blogPostMapper.mapBlogEntryDataToResponse(updatedPostData);
+        return blogPostMapper.mapBlogPostDataToResponse(updatedPostData);
     }
 
     /**
-     * Deletes a blog entry by its ID.
+     * Deletes a blog post by its ID.
      *
-     * @param id The unique identifier of the blog entry to be deleted.
+     * @param id The unique identifier of the blog post to be deleted.
      */
-    public void deleteBlogEntry(final Long id) {
+    public void deleteBlogPost(final Long id) {
         blogRepository.deleteById(id);
     }
 }

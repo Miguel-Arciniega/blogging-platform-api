@@ -17,25 +17,25 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.deimos.projects.bloggingplatformapi.utils.Constants.BLOGS_PATH;
-import static org.deimos.projects.bloggingplatformapi.utils.Constants.BLOG_BY_ID_PATH;
+import static org.deimos.projects.bloggingplatformapi.utils.Constants.*;
 
 /**
- * Handles blog-related operations in the blogging platform API.
- * Provides endpoints for creating, retrieving, updating, and deleting blogs.
+ * Handles post-related operations in the blogging platform API.
+ * Provides endpoints for creating, retrieving, updating, and deleting posts.
  */
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Blog", description = "Blog management APIs")
-public class BlogController {
+@RequestMapping(POST_PATH)
+@Tag(name = "Post API", description = "Blog post management APIs")
+public class BlogPostController {
 
-    private final BlogService blogService;
+    private final BlogService blogPostService;
 
     /**
-     * Creates a new blog entry.
+     * Creates a new blog post.
      *
      * @param blogPostRequest The request containing the blog data.
-     * @return BlogPostResponse containing the created blog entry details.
+     * @return BlogPostResponse containing the created blog post details.
      */
     @Operation(summary = "Create a new blog post")
     @ApiResponses(value = {
@@ -44,18 +44,18 @@ public class BlogController {
         @ApiResponse(responseCode = "400", description = "Invalid input"),
         @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @PostMapping(BLOGS_PATH)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogPostResponse createBlogEntry(
+    public BlogPostResponse createPost(
             @Parameter(description = "Blog post to create") 
             @Valid @RequestBody final BlogPostRequest blogPostRequest) {
-        return blogService.createBlogEntry(blogPostRequest);
+        return blogPostService.createBlogPost(blogPostRequest);
     }
 
     /**
-     * Retrieves all blog entries.
+     * Retrieves all blog posts.
      *
-     * @return List of BlogPostResponse containing all blog entries.
+     * @return List of BlogPostResponse containing all blog posts.
      */
     @Operation(summary = "Get all blog posts")
     @ApiResponses(value = {
@@ -63,17 +63,17 @@ public class BlogController {
             content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping(BLOGS_PATH)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<BlogPostResponse> getAllBlogEntries() {
-        return blogService.getAllBlogEntries();
+    public List<BlogPostResponse> getAllBlogPosts() {
+        return blogPostService.getAllBlogPosts();
     }
 
     /**
-     * Retrieves a blog entry by its ID.
+     * Retrieves a blog post by its ID.
      *
-     * @param blogId The unique identifier of the blog entry.
-     * @return BlogPostResponse containing the blog entry details.
+     * @param postId The unique identifier of the blog post.
+     * @return BlogPostResponse containing the blog post details.
      */
     @Operation(summary = "Get a blog post by its id")
     @ApiResponses(value = {
@@ -82,20 +82,20 @@ public class BlogController {
         @ApiResponse(responseCode = "404", description = "Blog post not found"),
         @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping(BLOG_BY_ID_PATH)
+    @GetMapping(POST_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public BlogPostResponse getBlogEntryById(
+    public BlogPostResponse getBlogPostById(
             @Parameter(description = "ID of blog post to retrieve")
-            @PathVariable final Long blogId) {
-        return blogService.getBlogEntryById(blogId);
+            @PathVariable final Long postId) {
+        return blogPostService.getBlogPostById(postId);
     }
 
     /**
-     * Updates an existing blog entry.
+     * Updates an existing blog post.
      *
-     * @param blogId           The unique identifier of the blog entry to update.
-     * @param blogPostRequest  The request containing the updated blog data.
-     * @return BlogPostResponse containing the updated blog entry details.
+     * @param postId           The unique identifier of the blog post to update.
+     * @param blogPostRequest  The request containing the updated blog post data.
+     * @return BlogPostResponse containing the updated blog post details.
      */
     @Operation(summary = "Update an existing blog post")
     @ApiResponses(value = {
@@ -105,20 +105,20 @@ public class BlogController {
         @ApiResponse(responseCode = "404", description = "Blog post not found"),
         @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @PutMapping(BLOG_BY_ID_PATH)
+    @PutMapping(POST_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public BlogPostResponse updateBlogEntry(
+    public BlogPostResponse updateBlogPost(
             @Parameter(description = "ID of blog post to update")
-            @PathVariable final Long blogId,
+            @PathVariable final Long postId,
             @Parameter(description = "Updated blog post content")
             @Valid @RequestBody final BlogPostRequest blogPostRequest) {
-        return blogService.updateBlogEntry(blogPostRequest, blogId);
+        return blogPostService.updateBlogPost(blogPostRequest, postId);
     }
 
     /**
-     * Deletes a blog entry by its ID.
+     * Deletes a blog post by its ID.
      *
-     * @param blogId The unique identifier of the blog entry to delete.
+     * @param postId The unique identifier of the blog post to delete.
      */
     @Operation(summary = "Delete a blog post")
     @ApiResponses(value = {
@@ -126,11 +126,11 @@ public class BlogController {
         @ApiResponse(responseCode = "404", description = "Blog post not found"),
         @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @DeleteMapping(BLOG_BY_ID_PATH)
+    @DeleteMapping(POST_ID_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBlogEntry(
+    public void deleteBlogPost(
             @Parameter(description = "ID of blog post to delete")
-            @PathVariable final Long blogId) {
-        blogService.deleteBlogEntry(blogId);
+            @PathVariable final Long postId) {
+        blogPostService.deleteBlogPost(postId);
     }
 }
