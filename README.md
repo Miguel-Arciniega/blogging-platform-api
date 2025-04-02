@@ -10,13 +10,7 @@ Ensure the following tools/software are installed and configured:
    - Install JDK version 21 or later
    - Set the `JAVA_HOME` environment variable to the JDK installation directory
 
-2. **Gradle 7+**
-   - Install Gradle (version 7 or later) and verify it is accessible:
-     ```sh
-     gradle --version
-     ```
-
-3. **Docker**
+2. **Docker**
    - Install Docker and confirm it is running:
      ```sh
      docker --version

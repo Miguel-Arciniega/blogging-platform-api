@@ -37,4 +37,4 @@ out/
 .env/
 
 ### VS Code ###
-.vscode/
+.vscode/settings.json
