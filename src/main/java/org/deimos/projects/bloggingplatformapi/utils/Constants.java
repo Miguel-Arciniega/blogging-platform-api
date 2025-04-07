@@ -8,6 +8,7 @@ package org.deimos.projects.bloggingplatformapi.utils;
 public class Constants {
 
     public static final String BLOG_ENTRY_NOT_FOUND = "Error: Post with ID {%s} not found.";
+    public static final String WILD_CARD = "%";
 
     // Constants for endpoint paths
     public static final String POST_ID_PATH = "/{postId}";

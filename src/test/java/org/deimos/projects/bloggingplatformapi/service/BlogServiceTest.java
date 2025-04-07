@@ -1,5 +1,6 @@
 package org.deimos.projects.bloggingplatformapi.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.deimos.projects.bloggingplatformapi.exceptions.BlogPostNotFoundException;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostData;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostRequest;
@@ -98,7 +99,7 @@ class BlogServiceTest {
         when(blogPostMapper.mapToBlogPostList(blogPostDataList)).thenReturn(expectedResponses);
 
         // When
-        List<BlogPostResponse> result = blogService.getAllBlogPosts();
+        List<BlogPostResponse> result = blogService.getBlogPosts(StringUtils.EMPTY);
 
         // Then
         assertNotNull(result);

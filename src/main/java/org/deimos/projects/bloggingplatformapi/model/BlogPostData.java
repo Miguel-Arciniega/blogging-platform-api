@@ -2,11 +2,8 @@ package org.deimos.projects.bloggingplatformapi.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.*;
-import org.springframework.data.relational.core.mapping.Table;
-
+import jakarta.persistence.*;
 import java.time.Instant;
-
 
 /**
  * Represents an entry in a blogging platform.
@@ -27,17 +24,38 @@ import java.time.Instant;
  */
 @Data
 @NoArgsConstructor
-@Table("BLOG_POST")
+@Entity
+@Table(name = "BLOG_POST")
 public class BlogPostData {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
+
+    @Lob
     private String content;
+
     private String category;
+
     private String tags;
-    @CreatedDate
+
+    @Column(nullable = false, updatable = false)
     private Instant createdAt;
-    @LastModifiedDate
+
+    @Column(nullable = false)
     private Instant updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        Instant currentTimeStamp = Instant.now();
+        this.createdAt = currentTimeStamp;
+        this.updatedAt = currentTimeStamp;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
 }

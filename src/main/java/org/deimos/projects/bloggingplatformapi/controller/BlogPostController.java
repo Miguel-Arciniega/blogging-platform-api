@@ -39,16 +39,15 @@ public class BlogPostController {
      */
     @Operation(summary = "Create a new blog post")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Blog post created successfully",
-            content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid input"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
+            @ApiResponse(responseCode = "201", description = "Blog post created successfully", 
+                        content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BlogPostResponse createPost(
-            @Parameter(description = "Blog post to create") 
-            @Valid @RequestBody final BlogPostRequest blogPostRequest) {
+            @Parameter(description = "Blog post to create") @Valid @RequestBody final BlogPostRequest blogPostRequest) {
         return blogPostService.createBlogPost(blogPostRequest);
     }
 
@@ -57,16 +56,18 @@ public class BlogPostController {
      *
      * @return List of BlogPostResponse containing all blog posts.
      */
-    @Operation(summary = "Get all blog posts")
+    @Operation(summary = "Get blog posts")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Found all blog posts",
-            content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
+            @ApiResponse(responseCode = "200", description = "Found all blog posts", 
+                        content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<BlogPostResponse> getAllBlogPosts() {
-        return blogPostService.getAllBlogPosts();
+    public List<BlogPostResponse> getBlogPosts(
+            @Parameter(description = "Optional search term to filter blog posts")
+            @RequestParam(value = "term", required = false) final String searchTerm) {
+        return blogPostService.getBlogPosts(searchTerm);
     }
 
     /**
@@ -77,41 +78,38 @@ public class BlogPostController {
      */
     @Operation(summary = "Get a blog post by its id")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Found the blog post",
-            content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Blog post not found"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
+            @ApiResponse(responseCode = "200", description = "Found the blog post", 
+                        content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Blog post not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping(POST_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public BlogPostResponse getBlogPostById(
-            @Parameter(description = "ID of blog post to retrieve")
-            @PathVariable final Long postId) {
+            @Parameter(description = "ID of blog post to retrieve") @PathVariable("postId") final Long postId) {
         return blogPostService.getBlogPostById(postId);
     }
 
     /**
      * Updates an existing blog post.
      *
-     * @param postId           The unique identifier of the blog post to update.
-     * @param blogPostRequest  The request containing the updated blog post data.
+     * @param postId          The unique identifier of the blog post to update.
+     * @param blogPostRequest The request containing the updated blog post data.
      * @return BlogPostResponse containing the updated blog post details.
      */
     @Operation(summary = "Update an existing blog post")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Blog post updated successfully",
-            content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid input"),
-        @ApiResponse(responseCode = "404", description = "Blog post not found"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
+            @ApiResponse(responseCode = "200", description = "Blog post updated successfully", 
+                        content = @Content(schema = @Schema(implementation = BlogPostResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "Blog post not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping(POST_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public BlogPostResponse updateBlogPost(
-            @Parameter(description = "ID of blog post to update")
-            @PathVariable final Long postId,
-            @Parameter(description = "Updated blog post content")
-            @Valid @RequestBody final BlogPostRequest blogPostRequest) {
+            @Parameter(description = "ID of blog post to update") @PathVariable("postId") final Long postId,
+            @Parameter(description = "Updated blog post content") @Valid @RequestBody final BlogPostRequest blogPostRequest) {
         return blogPostService.updateBlogPost(blogPostRequest, postId);
     }
 
@@ -122,15 +120,14 @@ public class BlogPostController {
      */
     @Operation(summary = "Delete a blog post")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Blog post deleted successfully"),
-        @ApiResponse(responseCode = "404", description = "Blog post not found"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized")
+            @ApiResponse(responseCode = "204", description = "Blog post deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Blog post not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @DeleteMapping(POST_ID_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBlogPost(
-            @Parameter(description = "ID of blog post to delete")
-            @PathVariable final Long postId) {
+            @Parameter(description = "ID of blog post to delete") @PathVariable("postId") final Long postId) {
         blogPostService.deleteBlogPost(postId);
     }
 }

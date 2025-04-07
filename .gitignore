@@ -35,6 +35,3 @@ out/
 
 ### Environment ###
 .env/
-
-### VS Code ###
-.vscode/settings.json

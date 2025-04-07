@@ -1,6 +1,10 @@
 package org.deimos.projects.bloggingplatformapi.service;
 
-import lombok.RequiredArgsConstructor;
+import static org.deimos.projects.bloggingplatformapi.utils.Constants.WILD_CARD;
+
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.deimos.projects.bloggingplatformapi.exceptions.BlogPostNotFoundException;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostData;
 import org.deimos.projects.bloggingplatformapi.model.BlogPostRequest;
@@ -9,7 +13,7 @@ import org.deimos.projects.bloggingplatformapi.model.mapper.BlogPostMapper;
 import org.deimos.projects.bloggingplatformapi.repository.BlogRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 
 /**
@@ -67,10 +71,17 @@ public class BlogService {
 
     /**
      * Retrieves all blog posts stored in the database.
+     * <p>
+     * If a search term is provided, it filters the blog posts based on the title,
+     * content, or category. If no search term is provided, it returns all blog posts.
      *
      * @return List of BlogPostResponse containing details of all blog posts.
      */
-    public List<BlogPostResponse> getAllBlogPosts() {
+    public List<BlogPostResponse> getBlogPosts(String keyword) {
+        if (StringUtils.isNotBlank(keyword)) {
+            String searchTerm = WILD_CARD + keyword + WILD_CARD;
+            return blogPostMapper.mapToBlogPostList(blogRepository.findBySearchTerm(searchTerm));
+        }
         return blogPostMapper.mapToBlogPostList(blogRepository.findAll());
     }
 
